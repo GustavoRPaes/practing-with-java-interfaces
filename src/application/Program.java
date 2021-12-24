@@ -1,22 +1,51 @@
 package application;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 
-import services.OnlinePaymentService;
+import entities.Contract;
+import entities.Installment;
+import services.ContractService;
 import services.PaypalService;
 
 public class Program {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		
-		OnlinePaymentService ps = new PaypalService();
+//		OnlinePaymentService ps = new PaypalService();
+//		
+//		ContractService cs = new ContractService(ps);
 		
-		System.out.println(ps.paymentFee(200.00));
-		System.out.println(ps.interest(200.00, 3));
+		System.out.println("Enter contract date:");
+		System.out.print("Number: ");
+		Integer number = sc.nextInt();
+		System.out.print("Date (dd/MM/yyyy: ");
+		Date date = sdf.parse(sc.next());
+		System.out.print("Contract value: ");
+		Double totalValue = sc.nextDouble();
+		
+		Contract contract = new Contract(number, date, totalValue);
+		
+		System.out.print("Enter number of installments: ");
+		int N = sc.nextInt();
+		
+		ContractService cs = new ContractService(new PaypalService());
+		
+		cs.processContract(contract, N);
+		
+		System.out.println("Intallments: ");
+		for (Installment it : contract.getInstallments()) {
+			System.out.println(it);
+		}
+		
+		sc.close();
 
 	}
 

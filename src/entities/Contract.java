@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class Contract {
 	private Date date;
 	private Double totalValue;
 
-	List<Installment> installments;
+	List<Installment> installments = new ArrayList<Installment>();
 
 	public Contract() {
 
